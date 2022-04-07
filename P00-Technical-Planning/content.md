@@ -1,7 +1,4 @@
----
-title: 'User Narratives, Wire Frames, and Technical Planning'
-slug: technical-planning
----
+# Technical Planning
 
 This tutorial is part of a four part series with the [Giphy Search Tutorial](https://www.makeschool.com/academy/track/standalone/gif-search-app-ynu/your-node-environment), the [Concentration Game](https://www.makeschool.com/academy/track/standalone/javascript-concentration-game/JavaScript-game-Tutorial-intro), the [Rotten Potatoes Tutorial](https://www.makeschool.com/academy/track/standalone/rotten-potatoes---movie-reviews-with-express-js/start-an-express-project). Whereas those tutorials gave you 100% of the code or starter code you needed to build them, this project will be more demanding of you to write your own code, or find the proper code snippets from your other projects and framework documentation.
 
