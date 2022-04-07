@@ -128,32 +128,24 @@ Essentially, `express.json()` is a necessary middleware to communicate with your
 
 `express-validator` is a wrapper around [validator.js](https://github.com/chriso/validator.js) that validates and sanitizes string inputs.
 
-> [info]
-> In production, your users will try to type in all kinds of nonsense into your forms --- even things your site wasn't intended to deal with! `express-validator` plugs into the Express.js ecosystem and helps keep you and your code safe.
 
-<!-- -->
+In production, your users will try to type in all kinds of nonsense into your forms --- even things your site wasn't intended to deal with! `express-validator` plugs into the Express.js ecosystem and helps keep you and your code safe.
 
-> [action]
-> Install `express-validator`:
->
+Install `express-validator`:
+
 ```bash
 npm install express-validator
 ```
->
-> Note: as of npm 5.0.0 installed modules are added as a dependency by default. The `--save` option is no longer needed.
-> [Stack Overflow Answer](https://stackoverflow.com/questions/19578796/what-is-the-save-option-for-npm-install)
 
-<!-- -->
+Note: as of npm 5.0.0 installed modules are added as a dependency by default. The `--save` option is no longer needed.
+[Stack Overflow Answer](https://stackoverflow.com/questions/19578796/what-is-the-save-option-for-npm-install)
 
-> [action]
-> Next, add the following to your `server.js` file:
->
+Next, add the following to your `server.js` file:
+
 ```js
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 ```
-
-<!-- -->
 
 # Connecting to your database
 
