@@ -1,7 +1,4 @@
----
-title: "Create a Post"
-slug: create-a-post
----
+# Create a Post
 
 Follow the technical planning list we made, and make sub tasks for each major feature.
 
@@ -24,8 +21,8 @@ Follow the technical planning list we made, and make sub tasks for each major fe
 
 To create a new instance of a resource, we first have to make a button to make a new post.
 
-> [action]
-> Since making a post is a very important **Call To Action (CTA)**, we'll put it in the navbar.
+
+Since making a post is a very important **Call To Action (CTA)**, we'll put it in the navbar.
 
 ```html
 <li><a href="/posts/new" class="btn btn-primary navbar-btn">New Post</a></li>
@@ -33,12 +30,12 @@ To create a new instance of a resource, we first have to make a button to make a
 
 Next, we have to create the form. Let's follow RESTful routing and make the url match this pattern: `/<<RESOURCE NAME PLURAL>>/new`. In the case of a resource `Post`, the path will be `/posts/new`.
 
-> [action]
-> Create this `/posts/new` route and have it render a newly created template named `posts-new.handlebars`.
->
-> Now, use the [bootstrap form classes](https://getbootstrap.com/docs/5.0/forms/overview/#overview) to add a form for an object with a `title`, `url`, and `summary` attributes. Your form should have an action that points to a `create` route => `/posts`.
->
-> **Remember** to put this form in the center 4 columns of a grid.
+
+Create this `/posts/new` route and have it render a newly created template named `posts-new.handlebars`.
+
+Now, use the [bootstrap form classes](https://getbootstrap.com/docs/5.0/forms/overview/#overview) to add a form for an object with a `title`, `url`, and `summary` attributes. Your form should have an action that points to a `create` route => `/posts`.
+
+**Remember** to put this form in the center 4 columns of a grid.
 
 ```html
 <div class="row">
@@ -95,9 +92,9 @@ So what happens when you submit this form?
 
 Nothing! We're missing a `/posts/new` route, so let's make it.
 
-> [action]
-> First, make a new folder called `controllers`. Within, create the file `posts.js`.
->
+
+First, make a new folder called `controllers`. Within, create the file `posts.js`.
+
 ```js
 module.exports = (app) => {
   // CREATE
@@ -106,8 +103,8 @@ module.exports = (app) => {
   });
 };
 ```
->
-> Next, require this file in your `server.js` file, and pass in the `app` variable as an argument.
+
+Next, require this file in your `server.js` file, and pass in the `app` variable as an argument.
 >
 ```js
 require('./controllers/posts')(app);
@@ -162,11 +159,10 @@ app.use(express.urlencoded({ extended: false }));
 
 You're going to need to connect to a NoSQL database called [MongoDB](https://docs.mongodb.com/). Look through the documentation as a reference if you get stuck. It's just a good habit to get into.
 
-> [action]
-> Let's start off by creating a new `/data` folder in the top-level structure of your project, then create a new JavaScript file.
->
-> Open your terminal and type:
->
+Let's start off by creating a new `/data` folder in the top-level structure of your project, then create a new JavaScript file.
+
+Open your terminal and type:
+
 ```bash
 mkdir data
 cd data
@@ -175,54 +171,46 @@ touch reddit-db.js
 
 Now, we need to make sure that we have `mongodb` installed by doing a `which` command.
 
-> [action]
-> You should see a destination path to the Mongo executable:
->
+You should see a destination path to the Mongo executable:
+
 ```bash
 $ which mongod
 /usr/local/bin/mongod
 ```
->
-> We're also going to make sure that our Mongo database is running:
->
+
+We're also going to make sure that our Mongo database is running:
+
 ```bash
 brew services restart mongodb-community
 ```
 
 Great! Next, we're going to use the `reddit-db.js` file we made earlier to connect to the database.
 
-> [action]
-> Open `reddit-db.js`, and paste the following code inside:
->
+Open `reddit-db.js`, and paste the following code inside:
+
 ```js
 /* Mongoose Connection */
 const mongoose = require('mongoose');
 assert = require('assert');
->
-const url = 'mongodb://localhost/reddit-db';
+
+const url = 'mongodb://127.0.0.1/reddit-db'; //mongodb://localhost/reddit-db
 mongoose.connect(
   url,
-  {
-    useNewUrlParser: true
-  },
   function(err, db) {
     assert.equal(null, err);
     console.log('Connected successfully to database');
->
-    // db.close(); turn on for testing
   }
 );
 mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection Error:'));
 mongoose.set('debug', true);
->
+
 module.exports = mongoose.connection;
 ```
 
 Now all that's left is to tie this into our main `server.js` file.
 
-> [action]
-> Open up `server.js`, and paste this in:
->
+Open up `server.js`, and paste this in:
+
 ```js
 // Set db
 require('./data/reddit-db');
@@ -234,59 +222,55 @@ In order to interact with the MongoDB database we're going to use the npm module
 
 **IMPORTANT NOTE:** Make sure that you put all middleware requires **_BEFORE_** all routes (including routes imported from other files), or your routes may not work!
 
-> [action]
->
-> Read the note above again! No really, re-read it so that you remember to do this throughout the tutorial. Your future self will thank you from all the time/frustration you save
+Read the note above again! No really, re-read it so that you remember to do this throughout the tutorial. Your future self will thank you from all the time/frustration you save
 
-<!-- -->
+Create the folder `models` and inside put the `post.js` file. Here's a sample model for our `Post` resource.
+We can use [destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) to get `Schema` directly from the require statement.
+If you would like a video explaining destructuring check out [JS Destructuring in 100 Seconds](https://vid.puffyan.us/watch?v=UgEaJBz3bjY)
 
-> [action]
-> Create the folder `models` and inside put the `post.js` file. Here's a sample model for our `Post` resource.
-> We can use [destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) to get `Schema` directly from the require statement.
-> If you would like a video explaining destructuring check out [JS Destructuring in 100 Seconds](https://vid.puffyan.us/watch?v=UgEaJBz3bjY)
->
 ```js
 const { Schema, model } = require('mongoose');
->
+
 const postSchema = new Schema({
   title: { type: String, required: true },
   url: { type: String, required: true },
   summary: { type: String, required: true }
 });
->
+
 module.exports = model('Post', postSchema);
 ```
->
-> Now that we have a model, require it at the top of `controllers/posts.js`:
->
+
+Now that we have a model, require it at the top of `controllers/posts.js`:
+
 ```js
 const Post = require('../models/post');
 ```
->
-> Put it to use in our "create posts" endpoint:
->
+
+Put it to use in our "create posts" endpoint:
+
 ```js
 const Post = require('../models/post');
->
+
 module.exports = (app) => {
->
+
   // CREATE
   app.post('/posts/new', (req, res) => {
     // INSTANTIATE INSTANCE OF POST MODEL
     const post = new Post(req.body);
->
+
     // SAVE INSTANCE OF POST MODEL TO DB AND REDIRECT TO THE ROOT
     post.save(() => res.redirect('/'));
   });
->
 };
 ```
->
-> Notice how `res.direct` is on the same line and we have left out the curly brackets.
-> This is not a mistake. If an arrow function only has one line in the curly brackets and we want to return that line, we can put it on the same line and remove the curly brackets.
-> [Read more](https://codeburst.io/javascript-understand-arrow-function-syntax-ab4081bba85b?gi=b9a68f0812ca).
-> 
-> Additionally, we want to ensure we always return the `res` and exit the code execution, unless we have a specific reason why we want to continue the code execution.
+
+Notice how `res.direct` is on the same line and we have left out the curly brackets.
+
+This is not a mistake. If an arrow function only has one line in the curly brackets and we want to return that line, we can put it on the same line and remove the curly brackets.
+
+[Read more](https://codeburst.io/javascript-understand-arrow-function-syntax-ab4081bba85b?gi=b9a68f0812ca).
+
+Additionally, we want to ensure we always return the `res` and exit the code execution, unless we have a specific reason why we want to continue the code execution.
 
 # Confirming Posts are Saving
 
@@ -304,18 +288,17 @@ $ git push
 
 # STRETCH CHALLENGE: Adding Created At and Updated At Attributes
 
-> [challenge]
-> Create a new model, and figure out how you can display these new attributes in your app:
->
+Create a new model, and figure out how you can display these new attributes in your app:
+
 ```js
 const { Schema, model } = require('mongoose');
->
+
 const postSchema = new Schema({
   title: { type: String, required: true },
   url: { type: String, required: true },
   summary: { type: String, required: true },
 }, { timestamps: true });
->
+
 module.exports = model('Post', postSchema);
 ```
 
